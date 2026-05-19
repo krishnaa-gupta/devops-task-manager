@@ -27,11 +27,13 @@ pipeline {
                 sh '''
                 ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ec2-user@3.108.190.192 "
 
+                rm -rf devops-task-manager
+
+                git clone https://github.com/krishnaa-gupta/devops-task-manager.git
+
                 cd devops-task-manager
 
-                git pull
-
-                docker-compose down
+                docker-compose down || true
 
                 docker-compose up --build -d
                 "
