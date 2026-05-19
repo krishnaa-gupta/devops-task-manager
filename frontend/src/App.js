@@ -10,7 +10,7 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    const res = await axios.get('http://3.108.190.192:5000/api/tasks');
+    const res = await axios.post("http://3.108.190.192:5000/api/tasks");
     setTasks(res.data);
   };
 
