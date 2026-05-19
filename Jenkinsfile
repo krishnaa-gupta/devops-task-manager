@@ -31,23 +31,9 @@ pipeline {
 
                 git pull
 
-                docker rm -f frontend backend || true
+                docker-compose down
 
-                docker build -t backend-app ./backend
-                docker build -t frontend-app ./frontend
-
-                docker run -d \
-                --name backend \
-                --network devops-task-manager_default \
-                -p 5000:5000 \
-                -e MONGO_URI=mongodb://mongodb:27017/taskdb \
-                backend-app
-
-                docker run -d \
-                --name frontend \
-                --network devops-task-manager_default \
-                -p 3000:3000 \
-                frontend-app
+                docker-compose up --build -d
                 "
                 '''
             }
