@@ -5,14 +5,12 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
-  // Fetch tasks
+  const API_URL = "http://3.108.190.192:5000/api/tasks";
+
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(
-        "http://3.108.190.192:5000/api/tasks"
-      );
-
-      setTasks(res.data);
+      const response = await axios.get(API_URL);
+      setTasks(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -22,15 +20,17 @@ function App() {
     fetchTasks();
   }, []);
 
-  // Add task
   const addTask = async () => {
-    if (!task) return;
-
     try {
       await axios.post(
-        "http://3.108.190.192:5000/api/tasks",
+        API_URL,
         {
           title: task
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
       );
 
@@ -43,31 +43,21 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "30px" }}>
+    <div style={{ padding: "20px" }}>
       <h1>DevOps Task Manager</h1>
 
       <input
         type="text"
-        placeholder="Enter task"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        style={{
-          padding: "10px",
-          width: "300px",
-          marginRight: "10px"
-        }}
+        placeholder="Enter task"
       />
 
-      <button
-        onClick={addTask}
-        style={{
-          padding: "10px 20px"
-        }}
-      >
+      <button onClick={addTask}>
         Add Task
       </button>
 
-      <ul style={{ marginTop: "20px" }}>
+      <ul>
         {tasks.map((t) => (
           <li key={t._id}>{t.title}</li>
         ))}
