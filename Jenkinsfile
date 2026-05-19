@@ -35,7 +35,7 @@ pipeline {
 
                 docker-compose down || true
 
-                docker-compose up --build -d
+                docker-compose up -d
                 "
                 '''
             }
