@@ -5,7 +5,8 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/krishnaa-gupta/devops-task-manager.git'
+                git branch: 'main',
+                url: 'https://github.com/krishnaa-gupta/devops-task-manager.git'
             }
         }
 
@@ -21,4 +22,4 @@ pipeline {
             }
         }
     }
-}
+}}
