@@ -1,46 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [title, setTitle] = useState('');
+  const [task, setTask] = useState("");
+
+  // Fetch tasks
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get(
+        "http://3.108.190.192:5000/api/tasks"
+      );
+
+      setTasks(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  const fetchTasks = async () => {
-    const res = await axios.post("http://3.108.190.192:5000/api/tasks");
-    setTasks(res.data);
-  };
-
+  // Add task
   const addTask = async () => {
-    if (!title) return;
+    if (!task) return;
 
-    await axios.post('http://localhost:5000/api/tasks', {
-      title
-    });
+    try {
+      await axios.post(
+        "http://3.108.190.192:5000/api/tasks",
+        {
+          title: task
+        }
+      );
 
-    setTitle('');
-    fetchTasks();
+      setTask("");
+
+      fetchTasks();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <div style={{ padding: '40px' }}>
+    <div style={{ padding: "30px" }}>
       <h1>DevOps Task Manager</h1>
 
       <input
         type="text"
-        placeholder="Enter Task"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Enter task"
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        style={{
+          padding: "10px",
+          width: "300px",
+          marginRight: "10px"
+        }}
       />
 
-      <button onClick={addTask}>Add Task</button>
+      <button
+        onClick={addTask}
+        style={{
+          padding: "10px 20px"
+        }}
+      >
+        Add Task
+      </button>
 
-      <ul>
-        {tasks.map(task => (
-          <li key={task._id}>{task.title}</li>
+      <ul style={{ marginTop: "20px" }}>
+        {tasks.map((t) => (
+          <li key={t._id}>{t.title}</li>
         ))}
       </ul>
     </div>
