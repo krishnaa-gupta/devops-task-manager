@@ -25,7 +25,7 @@ pipeline {
         stage('Deploy To App Server') {
             steps {
                 sh '''
-                ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ec2-user@3.108.190.192 "
+                ssh -o StrictHostKeyChecking=no -i /path/to/private-key.pem ec2-user@YOUR_EC2_PUBLIC_IP "
 
                 rm -rf devops-task-manager
 
@@ -39,6 +39,16 @@ pipeline {
                 "
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment completed successfully'
+        }
+
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
